@@ -3,11 +3,11 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const uniqid = require("uniqid");
+const notesDb = require("./db/db.json");
 
 // Sets up the Express App
 const app = express();
 const PORT = 3000;
-
 
 // Read db.json
 function readJSONfile(filename, callback) {
@@ -37,13 +37,12 @@ app.get("/notes", (req, res) =>
 
 app.get("/api/notes", (req, res) => readJSONfile('./db/db.json', function (err, json) {
   if(err) { throw err; }
-  console.log(json);
+
   res.send(json);
 }));
 
 app.post("/api/notes", function(req, res, next) {
   let noteId = uniqid();
-  let noteSaved;
 
   let title = req.body.title;
   let text = req.body.text;
@@ -62,15 +61,27 @@ app.post("/api/notes", function(req, res, next) {
       console.log("New note added!");
     });
   });
-
-  console.log(req.body);
-  console.log('Note ID: ', noteId);
-  noteSaved = true;
   
   res.send(newNote)
 
 });
 
+app.delete("/api/notes/:id", function(req, res, next) {
+
+  let key = req.params.id;
+
+  for (let i = 0; i < notesDb.length; i++) {
+    if (notesDb[i].id === key) {
+      notesDb.splice(i,1);
+      res.send(notesDb);
+
+      fs.writeFile("./db/db.json", JSON.stringify(notesDb), function (err) {
+        if (err) return console.log(err);
+        console.log("Deleted Note ID: ", key);
+      });
+    }
+  }
+});
 
 // Starts the server to begin listening
 
