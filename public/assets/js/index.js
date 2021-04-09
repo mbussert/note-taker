@@ -59,8 +59,10 @@ const renderActiveNote = () => {
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
   } else {
-    noteTitle.value = '';
-    noteText.value = '';
+    noteTitle.removeAttribute("readonly"); // Remove readonly from textarea so user can enter new note
+    noteText.removeAttribute("readonly"); // Remove readonly from textarea so user can enter new note
+    noteTitle.value = "";
+    noteText.value = "";
   }
 };
 
@@ -105,6 +107,8 @@ const handleNewNoteView = (e) => {
   activeNote = {};
   renderActiveNote();
 };
+
+
 
 const handleRenderSaveBtn = () => {
   if (!noteTitle.value.trim() || !noteText.value.trim()) {

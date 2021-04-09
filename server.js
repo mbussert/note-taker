@@ -9,6 +9,11 @@ const notesDb = require("./db/db.json");
 const app = express();
 const PORT = 3000;
 
+// Sets up the Express app to handle data parsing
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static('public'));
+
 // Read db.json
 function readJSONfile(filename, callback) {
   fs.readFile(filename, function (err, data) {
@@ -23,10 +28,6 @@ function readJSONfile(filename, callback) {
     }
   });
 }
-
-// Sets up the Express app to handle data parsing
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 // Routes
 app.get("/", (req, res) => res.sendFile(path.join(__dirname, "/public/index.html")));
