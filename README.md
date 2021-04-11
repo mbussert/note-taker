@@ -2,7 +2,7 @@
 
   ## Links:  
 
-  Live Demo:   
+  Live Demo: https://secure-peak-80525.herokuapp.com/  
   Repository: https://github.com/mbussert/note-taker  
 
   ## Description: 
